@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h4>Your gold: {{request.session.goldcollected}}</h4>
+            <form action="process" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="place" value="reset">
+                <input type="submit" value="Reset Gold">
+            </form><br>
+            <div class="row" style="text-align: center;">
+                <div class="col-md-3 well">
+                    <form action="/process", method="post">
+                        {% csrf_token %}
+                        <h3>Farm</h3>
+                        <p>(earns 10-20 golds)</p>
+                        <input type="submit" value="Find Gold!">
+                        <input type="hidden" name="place" value="farm">
+                    </form>
+                </div>
+                <div class="col-md-3 well">
+                    <form action="process", method="post">
+                        {% csrf_token %}
+                        <h3>Cave</h3>
+                        <p>(earns 5-10 golds)</p>
+                        <input type="hidden" name="place" value="cave">
+                        <input type="submit" value="Find Gold!">
+                    </form>
+                </div>
+                <div class="col-md-3 well">
+                    <form action="process", method="post">
+                        {% csrf_token %}
+                        <h3>House</h3>
+                        <p>(earns 2-5 golds)</p>
+                        <input type="hidden" name="place" value="house">
+                        <input type="submit" value="Find Gold!">
+                    </form>
+                </div>
+                <div class="col-md-3 well">
+                    <form action="process", method="post">
+                        {% csrf_token %}
+                        <h3>Casino</h3>
+                        <p>(earns/take 0-50 golds)</p>
+                        <input type="hidden" name="place" value="casino">
+                        <input type="submit" value="Find Gold!">
+                    </form>
+                </div>
+                <p style="text-align: left;">Activieis:</p>
+                {% for stuff in request.session.messages %}
+                    {% if stuff.earnorlost == 'plus' %}
+                    <p style="text-align:left; color:green">Earned {{stuff.goldcollected}} golds from the {{stuff.place}}! {{stuff.time}}</p>
+                    {% else %}
+                    <p style="text-align:left; color:red">Lost {{stuff.goldcollected}} golds from the {{stuff.place}}! {{stuff.time}}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
